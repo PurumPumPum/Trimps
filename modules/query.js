@@ -92,7 +92,7 @@ function getEnemyMaxAttack(world, level, name, diff, corrupt) {
         amt *= Math.pow(1.15, world - 59);
     }
     if (world < 60) amt *= 0.85;
-    //if (world > 6 && game.global.mapsActive) amt *= 1.1;
+    if (world > 6 && game.global.mapsActive) amt *= 1.1;
     if (diff) {
         amt *= diff;
     }
