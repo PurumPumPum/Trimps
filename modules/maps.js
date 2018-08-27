@@ -507,8 +507,21 @@ function autoMap() {
             //if we are on toxicity, don't clear until we will have max stacks at the last cell.
             if (game.global.challengeActive == 'Toxicity' && game.challenges.Toxicity.stacks < (1500 - theMap.size)) break;
             doVoids = true;
+
+
+
             //check to make sure we won't get 1-shot in nostance by boss
-            var eAttack = getEnemyMaxAttack(game.global.world, theMap.size, 'Voidsnimp', theMap.difficulty);
+
+            // true atk 6952493328249
+            var eAttack = calcBadGuyDmg(null, getEnemyMaxAttack(game.global.world, theMap.size, 'Voidsnimp', theMap.difficulty),true, true); //(enemy,attack,daily,maxormin,[disableFlucts])
+            //var eAttack = calcBadGuyDmg(null, getEnemyMaxAttack(game.global.world, 4, 'Voidsnimp', theMap.difficulty),true, true); //(enemy,attack,daily,maxormin,[disableFlucts])
+            //var test = calcBadGuyDmg(getCurrentEnemy(), null, true,true)
+            //var test2 = calcBadGuyDmg(null, getEnemyMaxAttack(game.global.world, 4, 'Penguimp', theMap.difficulty),true, true); 
+            //getEnemyMaxAttack(40,1,"Squimp",1.5,false)
+            
+
+
+
             if (game.global.world >= 181 || (game.global.challengeActive == "Corrupted" && game.global.world >= 60))
                 eAttack *= (getCorruptScale("attack") / 2).toFixed(1);
             //TODO: Account for magmated voidmaps. (not /2)
@@ -528,6 +541,7 @@ function autoMap() {
             //continue to check for doable map?
             var diff = parseFloat(getPageSetting('VoidCheck')) > 0 ? parseFloat(getPageSetting('VoidCheck')) : 2;
             var ourBlock = getBattleStats("block", true); //use block tooltip (after death block) instead of current army block.
+            
             if (ourHealth / diff < eAttack - ourBlock) {
                 shouldFarm = true;
                 voidCheckPercent = Math.round((ourHealth / diff) / (eAttack - ourBlock) * 100);
