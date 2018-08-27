@@ -248,6 +248,8 @@ function autoMap() {
         shouldDoHealthMaps = true;
     }
 
+    if (doVoids && voidCheckPercent > 0) {shouldFarmLowerZone = getPageSetting('LowerFarmingZone');}
+
     //FarmWhenNomStacks7
     var restartVoidMap = false;
     if (game.global.challengeActive == 'Nom' && getPageSetting('FarmWhenNomStacks7')) {
