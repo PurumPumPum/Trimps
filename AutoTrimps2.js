@@ -1,7 +1,9 @@
 // ==UserScript==
-// @name         ATGung
-// @version      G-0.04
-// @updateURL     
+
+// @name         Trimps-GR
+// @version      GR 0.01
+// @updateURL    https://purumpumpum.github.io/Trimps/AutoTrimps2.js
+
 // @description  Automate all the trimps!
 // @author       zininzinin, spindrjr, belaith, ishakaru, genBTC, Unihedron, coderPatsy, Kfro, Zeker0, Gungnir
 // @include      *trimps.github.io*
@@ -15,7 +17,7 @@ var ATversion = '2.1.6.9b-genbtc-4-2-2018 + KFrowde + Zeker0';
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////
 var atscript = document.getElementById('AutoTrimps-script')
-  , basepath = 'https://rawgit.com/PurumPumPum/Trimps/gh-pages/'
+  , basepath = 'https://purumpumpum.github.io/Trimps/'
   , modulepath = 'modules/'
   ;
 //This should redirect the script to wherever its being mirrored from.
