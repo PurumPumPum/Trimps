@@ -4,7 +4,6 @@ MODULES["maps"].farmingCutoff = getPageSetting('DisableFarm');
 MODULES["maps"].numHitsSurvived = 8;
 MODULES["maps"].LeadfarmingCutoff = 10;
 MODULES["maps"].NomfarmingCutoff = 10;
-MODULES["maps"].NurseryMapLevel = 50;
 MODULES["maps"].NomFarmStacksCutoff = [7, 30, 100];
 MODULES["maps"].MapTierZone = [72, 47, 16];
 MODULES["maps"].MapTier0Sliders = [9, 9, 9, 'Mountain'];
@@ -39,6 +38,7 @@ var spireTime = 0;
 var doMaxMapBonus = false;
 var vanillaMapatZone = false;
 var additionalCritMulti = (getPlayerCritChance() > 2) ? 25 : 5;
+var needHealthForVoid = 0;
 
 function autoMap() {
     var customVars = MODULES["maps"];
@@ -332,16 +332,6 @@ function autoMap() {
         shouldDoMaps = true;
         shouldDoSpireMaps = true;
     }
-    //Run a single map to get nurseries when 1. it's still locked,
-    // 2. blacksmithery is purchased,
-    // but not when 3A. home detector is purchased, or 3B. we don't need nurseries
-    if (game.buildings.Nursery.locked && game.talents.blacksmith.purchased && !(game.talents.housing.purchased ||
-            (getPageSetting('PreSpireNurseries') < 0 ?
-                !(getPageSetting('MaxNursery') && game.global.world >= getPageSetting('NoNurseriesUntil')) :
-                !getPageSetting('PreSpireNurseries'))) && game.global.world >= customVars.NurseryMapLevel) {
-        shouldDoMaps = true;
-        shouldDoWatchMaps = true; //TODO coding: this is overloaded - not ideal.
-    }
     //MaxMapBonusAfterZone (idea from awnv)
     var maxMapBonusZ = getPageSetting('MaxMapBonusAfterZone');
     doMaxMapBonus = (maxMapBonusZ >= 0 && game.global.mapBonus < customVars.maxMapBonusAfterZ && game.global.world >= maxMapBonusZ);
@@ -543,7 +533,9 @@ function autoMap() {
             //continue to check for doable map?
             var diff = parseFloat(getPageSetting('VoidCheck')) > 0 ? parseFloat(getPageSetting('VoidCheck')) : 2;
             var ourBlock = getBattleStats("block", true); //use block tooltip (after death block) instead of current army block.
-            
+            needHealthForVoid = eAttack;
+            voidCheckPercent = Math.round((ourHealth / diff) / (eAttack - ourBlock) * 100);
+
             if (ourHealth / diff < eAttack - ourBlock) {
                 shouldFarm = true;
                 voidCheckPercent = Math.round((ourHealth / diff) / (eAttack - ourBlock) * 100);
@@ -828,7 +820,7 @@ function updateAutoMapsStatus(get) {
     else if (doVoids && voidCheckPercent == 0) status = 'Void Maps: ' + game.global.totalVoidMaps + ' remaining';
     else if (stackingTox) status = 'Getting Tox Stacks';
     else if (needToVoid && !doVoids && game.global.totalVoidMaps > 0) status = 'Prepping for Voids';
-    else if (doVoids && voidCheckPercent > 0) status = 'Farming to do Voids: ' + voidCheckPercent + '%';
+    else if (doVoids && voidCheckPercent > 0) status = 'Farming to do Voids: ' + voidCheckPercent + '% '+prettify(needHealthForVoid);
     else if (shouldFarm && !doVoids) status = 'Farming: ' + HDratio.toFixed(4) + 'x';
     else if (scryerStuck) status = 'Scryer Got Stuck, Farming';
     else if (!enoughHealth && !enoughDamage) status = 'Want Health & Damage';
