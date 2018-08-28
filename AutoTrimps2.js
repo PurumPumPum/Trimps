@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         AutoTrimpsV2
-// @version      Zek-2.2.5
-// @updateURL    https://github.com/genbtc/AutoTrimps/AutoTrimps2.js
+// @name         ATGung
+// @version      G-0.01
+// @updateURL     
 // @description  Automate all the trimps!
-// @author       zininzinin, spindrjr, belaith, ishakaru, genBTC, Unihedron, coderPatsy, Kfro, Zeker0
+// @author       zininzinin, spindrjr, belaith, ishakaru, genBTC, Unihedron, coderPatsy, Kfro, Zeker0, Gungnir
 // @include      *trimps.github.io*
 // @include      *kongregate.com/games/GreenSatellite/trimps
 // @grant        none
