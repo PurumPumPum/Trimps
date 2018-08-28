@@ -1,9 +1,11 @@
 // ==UserScript==
+
 // @name         Trimps-GR
 // @version      GR 0.01
 // @updateURL    https://purumpumpum.github.io/Trimps/AutoTrimps2.js
+
 // @description  Automate all the trimps!
-// @author       zininzinin, spindrjr, belaith, ishakaru, genBTC, Unihedron, coderPatsy, Kfro, Zeker0
+// @author       zininzinin, spindrjr, belaith, ishakaru, genBTC, Unihedron, coderPatsy, Kfro, Zeker0, Gungnir
 // @include      *trimps.github.io*
 // @include      *kongregate.com/games/GreenSatellite/trimps
 // @grant        none
