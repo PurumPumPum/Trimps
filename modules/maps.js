@@ -4,7 +4,6 @@ MODULES["maps"].farmingCutoff = getPageSetting('DisableFarm');
 MODULES["maps"].numHitsSurvived = 8;
 MODULES["maps"].LeadfarmingCutoff = 10;
 MODULES["maps"].NomfarmingCutoff = 10;
-MODULES["maps"].NurseryMapLevel = 50;
 MODULES["maps"].NomFarmStacksCutoff = [7, 30, 100];
 MODULES["maps"].MapTierZone = [72, 47, 16];
 MODULES["maps"].MapTier0Sliders = [9, 9, 9, 'Mountain'];
@@ -332,16 +331,6 @@ function autoMap() {
     if (preSpireFarming || spireMapBonusFarming) {
         shouldDoMaps = true;
         shouldDoSpireMaps = true;
-    }
-    //Run a single map to get nurseries when 1. it's still locked,
-    // 2. blacksmithery is purchased,
-    // but not when 3A. home detector is purchased, or 3B. we don't need nurseries
-    if (game.buildings.Nursery.locked && game.talents.blacksmith.purchased && !(game.talents.housing.purchased ||
-            (getPageSetting('PreSpireNurseries') < 0 ?
-                !(getPageSetting('MaxNursery') && game.global.world >= getPageSetting('NoNurseriesUntil')) :
-                !getPageSetting('PreSpireNurseries'))) && game.global.world >= customVars.NurseryMapLevel) {
-        shouldDoMaps = true;
-        shouldDoWatchMaps = true; //TODO coding: this is overloaded - not ideal.
     }
     //MaxMapBonusAfterZone (idea from awnv)
     var maxMapBonusZ = getPageSetting('MaxMapBonusAfterZone');
