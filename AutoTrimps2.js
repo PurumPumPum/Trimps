@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ATGung
-// @version      G-0.03
+// @version      G-0.04
 // @updateURL     
 // @description  Automate all the trimps!
 // @author       zininzinin, spindrjr, belaith, ishakaru, genBTC, Unihedron, coderPatsy, Kfro, Zeker0, Gungnir
