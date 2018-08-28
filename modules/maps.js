@@ -39,6 +39,7 @@ var spireTime = 0;
 var doMaxMapBonus = false;
 var vanillaMapatZone = false;
 var additionalCritMulti = (getPlayerCritChance() > 2) ? 25 : 5;
+var needHealthForVoid = 0;
 
 function autoMap() {
     var customVars = MODULES["maps"];
@@ -543,7 +544,9 @@ function autoMap() {
             //continue to check for doable map?
             var diff = parseFloat(getPageSetting('VoidCheck')) > 0 ? parseFloat(getPageSetting('VoidCheck')) : 2;
             var ourBlock = getBattleStats("block", true); //use block tooltip (after death block) instead of current army block.
-            
+            needHealthForVoid = eAttack;
+            voidCheckPercent = Math.round((ourHealth / diff) / (eAttack - ourBlock) * 100);
+
             if (ourHealth / diff < eAttack - ourBlock) {
                 shouldFarm = true;
                 voidCheckPercent = Math.round((ourHealth / diff) / (eAttack - ourBlock) * 100);
@@ -828,7 +831,7 @@ function updateAutoMapsStatus(get) {
     else if (doVoids && voidCheckPercent == 0) status = 'Void Maps: ' + game.global.totalVoidMaps + ' remaining';
     else if (stackingTox) status = 'Getting Tox Stacks';
     else if (needToVoid && !doVoids && game.global.totalVoidMaps > 0) status = 'Prepping for Voids';
-    else if (doVoids && voidCheckPercent > 0) status = 'Farming to do Voids: ' + voidCheckPercent + '%';
+    else if (doVoids && voidCheckPercent > 0) status = 'Farming to do Voids: ' + voidCheckPercent + '% '+prettify(needHealthForVoid);
     else if (shouldFarm && !doVoids) status = 'Farming: ' + HDratio.toFixed(4) + 'x';
     else if (scryerStuck) status = 'Scryer Got Stuck, Farming';
     else if (!enoughHealth && !enoughDamage) status = 'Want Health & Damage';
