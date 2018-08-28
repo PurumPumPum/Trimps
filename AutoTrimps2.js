@@ -14,7 +14,6 @@ var ATversion = '2.1.6.9b-genbtc-4-2-2018 + KFrowde + Zeker0';
 //Main Loader Initialize Function (loads first, load everything else)///////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////
-//https://raw.githubusercontent.com/PurumPumPum/Trimps/gh-pages/modules/maps.js
 var atscript = document.getElementById('AutoTrimps-script')
   , basepath = 'https://rawgit.com/PurumPumPum/Trimps/gh-pages/'
   , modulepath = 'modules/'
