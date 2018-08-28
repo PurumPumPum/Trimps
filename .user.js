@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Trimps-GR
-// @version      0.01
+// @version      GR 0.01
 // @namespace    https://purumpumpum.github.io/Trimps/
 // @updateURL    https://purumpumpum.github.io/Trimps/.user.js
 // @description  Automate all the trimps!
