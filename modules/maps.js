@@ -214,7 +214,6 @@ function autoMap() {
     if ((timeEstimatedEncounter >= customVars.numHitsSurvived) ||
         (calcBadGuyDmg(null, getEnemyMaxAttack(game.global.world, 99, 'Snimp', 1.2), true, true)) > baseHealth + baseBlock)
 
-
     {
         enoughHealth = false;
     } else {
