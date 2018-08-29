@@ -209,9 +209,11 @@ function autoMap() {
     // breed * (enemyHealth \ (ourDmg * (ourHealth / (enemyDmg-block)))) = timeEncounter
     // getBreedTime() * (enemyHealth / (ourBaseDamage * (baseHealth / (enemyDamage-baseBlock))))
 
+
     var timeEstimatedEncounter = getBreedTime() * (enemyHealth / (ourBaseDamage * (baseHealth / (enemyDamage-baseBlock))));
     if ((timeEstimatedEncounter >= customVars.numHitsSurvived) ||
         (calcBadGuyDmg(null, getEnemyMaxAttack(game.global.world, 99, 'Snimp', 1.2), true, true)) > baseHealth + baseBlock)
+
 
     {
         enoughHealth = false;
