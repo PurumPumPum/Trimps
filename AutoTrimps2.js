@@ -11,63 +11,48 @@
 // @grant        none
 // ==/UserScript==
 var ATversion = '2.1.6.9b-genbtc-4-2-2018 + KFrowde + Zeker0';
-
-////////////////////////////////////////////////////////////////////////////////
-//Main Loader Initialize Function (loads first, load everything else)///////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////
 var atscript = document.getElementById('AutoTrimps-script')
   , basepath = 'https://purumpumpum.github.io/Trimps/'
   , modulepath = 'modules/'
   ;
-//This should redirect the script to wherever its being mirrored from.
 if (atscript !== null) {
     basepath = atscript.src.replace(/AutoTrimps2\.js$/, '');
 }
-//This could potentially do something one day. like: read localhost url from tampermonkey.
-// AKA do certain things when matched on a certain url.
-//if (atscript.src.includes('localhost')) {;};
 
-//Script can be loaded like this: ATscriptLoad(modulepath, 'utils.js');
 function ATscriptLoad(pathname, modulename) {
     if (modulename == null) debug("Wrong Syntax. Script could not be loaded. Try ATscriptLoad(modulepath, 'example.js'); ");
     var script = document.createElement('script');
     if (pathname == null) pathname = '';
     script.src = basepath + pathname + modulename + '.js';
     script.id = modulename + '_MODULE';
-    //script.setAttribute('crossorigin',"use-credentials");
-    //script.setAttribute('crossorigin',"anonymous");
     document.head.appendChild(script);
 }
-//Scripts can be unloaded like this: ATscriptUnload('scryer');
 function ATscriptUnload(id) {
     var $link = document.getElementById(id + '_MODULE');
     if (!$link) return;
     document.head.removeChild($link);
     debug("Removing " + id + "_MODULE","other");
 }
-ATscriptLoad(modulepath, 'utils');    //Load stuff needed to load other stuff:
+ATscriptLoad(modulepath, 'utils');
 
-//This starts up after 2.5 seconds.
 function initializeAutoTrimps() {
-    loadPageVariables();            //get autoTrimpSettings
-    ATscriptLoad('','SettingsGUI');   //populate Settings GUI
-    ATscriptLoad('','Graphs');        //populate Graphs
-    //Load modules:
+    loadPageVariables();
+    ATscriptLoad('','SettingsGUI');
+    ATscriptLoad('','Graphs');
     ATmoduleList = ['query', 'portal', 'upgrades', 'heirlooms', 'buildings', 'jobs', 'equipment', 'gather', 'stance', 'battlecalc', 'maps', 'breedtimer', 'dynprestige', 'fight', 'scryer', 'magmite', 'other', 'import-export', 'perks', 'fight-info', 'performance'];
     for (var m in ATmoduleList) {
         ATscriptLoad(modulepath, ATmoduleList[m]);
     }
-    //
     debug('AutoTrimps v' + ATversion + ' Loaded!', '*spinner3');
 }
 
 var changelogList = [];
-//changelogList.push({date: "??/??/2018", version: "v2.7.0", description: "<b>4.9</b> Here we go! Added the new Classy perk to Autoperks, along with updated ratios. Added an option in Buildings & Jobs to hide obsolete settings once you have unlocked certain masteries. Fixed Scryer. Added an option to Scry VMs without having to enable scrying. Is there more? Who knows! Only GS does. ", isNew: true});
-changelogList.push({date: "22/08/2018", version: "v2.6.3", description: "<b>Disable Farming</b> is now controllable, so <b>make sure to set it!</b> Added <b>Magic Armor</b> option to Dailys/C2s. <b>Changed the Daily Fight Always button, check it!</b> The Daily tab is getting really fat now, oh well lol. ", isNew: true});
+//changelogList.push({date: "??/??/2018", version: "v2.7.0", description: "<b>4.9</b> Here we go! Added the new Classy perk to Autoperks, along with updated ratios. Added an option in Buildings & Jobs to hide obsolete settings once you have unlocked certain masteries. Fixed Scryer. Added an option to Scry VMs without having to enable scrying. Added B instead of S for WS. Is there more? Who knows! Only GS does. ", isNew: true});
+changelogList.push({date: "29/08/2018", version: "v2.6.4", description: "Pre-4.9 update. Just some small optimizations here and there. I have changed some settings names such as AS3, check em out. Also just a quick thank you to anyone who uses my fork, its nice to know something I have made is actually being used haha. Please report any problems to me! ", isNew: true});
+changelogList.push({date: "22/08/2018", version: "v2.6.3", description: "<b>Disable Farming</b> is now controllable, so <b>make sure to set it!</b> Added <b>Magic Armor</b> option to Dailys/C2s. <b>Changed the Daily Fight Always button, check it!</b> The Daily tab is getting really fat now, oh well lol. ", isNew: false});
 changelogList.push({date: "21/08/2018", version: "v2.6.2", description: "<b>Amal Boost</b> can now be controlled. <b>Disable Farming</b> now has a more intuitive layout, so make sure to set it. You can also mess with <b>Scryer</b> Min/Max Zones better. Some new WS options to be added later. ", isNew: false});
 changelogList.push({date: "19/08/2018", version: "v2.6.1", description: "<b>Windstacking</b> now has its own tab. Added <b>Ultimate Windstacking.</b> There may be some other tweaks that I\'ve forgot about, but have fun experimenting! ", isNew: false});
-changelogList.push({date: "16/08/2018", version: "v2.5.3", description: "New <b>Magma</b> settings overhaul, it should be easier to understand now. Make sure they\'re set properly. Please let me know if something doesn\'t work with it. There\'s probably more stuff I've added or changed but I forgot lol. ", isNew: false});
+//changelogList.push({date: "16/08/2018", version: "v2.5.3", description: "New <b>Magma</b> settings overhaul, it should be easier to understand now. Make sure they\'re set properly. Please let me know if something doesn\'t work with it. There\'s probably more stuff I've added or changed but I forgot lol. ", isNew: false});
 //changelogList.push({date: "10/08/2018", version: "v2.5.2", description: "New <b>C2 Tab</b> added, work in progress though so don\'t expect much. Added a <b>Hardcore Windstacking Max</b> zone. Added the <b>550 ratio</b>. You may see the really old ratios also being removed, not that you should be using them anyway *cough* <b>IF YOU WERE USING AUTOPERKS MAKE SURE TO SET YOUR RATIO AGAIN</b>", isNew: false});
 //changelogList.push({date: "08/08/2018", version: "v2.5.1", description: "It\'s been a while. Added <b>Amal Boost</b> and reconfigured <b>golden upgrades</b>, i think you\'ll like it. 550+ Ratio is still being worked on (not that any of you will use it anyway lol) There\'s probably some other fixes and stuff aswell. More C2 specific stuff on its way, see you till next update! ", isNew: false});
 //changelogList.push({date: "21/07/2018", version: "v2.4.2", description: "Added <b>Daily windstacking.</b> Make sure to set them or it wont windstack in dailys! Also added a <b>Min Fuel Zone</b> to magmite so now you can start fueling at any zone you like instead of 230. Spike also fixed a few bugs with AS2 and added <b>MULTI BW RAIDING!</b> ", isNew: false});
