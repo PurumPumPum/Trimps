@@ -1,9 +1,10 @@
 MODULES["maps"] = {};
 MODULES["maps"].enoughDamageCutoff = 4;
 MODULES["maps"].farmingCutoff = getPageSetting('DisableFarm');
-MODULES["maps"].numHitsSurvived = 8;
+MODULES["maps"].numHitsSurvived = 15;
 MODULES["maps"].LeadfarmingCutoff = 10;
 MODULES["maps"].NomfarmingCutoff = 10;
+MODULES["maps"].NurseryMapLevel = 50;
 MODULES["maps"].NomFarmStacksCutoff = [7, 30, 100];
 MODULES["maps"].MapTierZone = [72, 47, 16];
 MODULES["maps"].MapTier0Sliders = [9, 9, 9, 'Mountain'];
@@ -141,12 +142,12 @@ function autoMap() {
     var enemyDamage;
     var enemyHealth;
     if (AutoStance <= 1) {
-        enemyDamage = getEnemyMaxAttack(game.global.world + 1, 50, 'Snimp', 1.2);
-        enemyDamage = calcDailyAttackMod(enemyDamage); //daily mods: badStrength,badMapStrength,bloodthirst
+        enemyDamage = calcBadGuyDmg(null, getEnemyMaxAttack(game.global.world, 80, 'Chimp', 1.0), true, true); //(enemy,attack,daily,maxormin,[disableFlucts])
+        //enemyDamage = calcDailyAttackMod(enemyDamage); //daily mods: badStrength,badMapStrength,bloodthirst
     } else {
         enemyDamage = calcBadGuyDmg(null, getEnemyMaxAttack(game.global.world + 1, 50, 'Snimp', 1.0), true, true); //(enemy,attack,daily,maxormin,[disableFlucts])
     }
-    enemyHealth = getEnemyMaxHealth(game.global.world + 1, 50);
+    enemyHealth = getEnemyMaxHealth(game.global.world, 50);
     if (game.global.challengeActive == "Toxicity") {
         enemyHealth *= 2;
     }
@@ -200,7 +201,21 @@ function autoMap() {
     const FORMATION_MOD_1 = game.upgrades.Dominance.done ? 2 : 1;
     //asks if we can survive x number of hits in either D stance or X stance.
     // health calculation looks off as damage in excess of block not accounted for in else clause of ternary operator
-    enoughHealth = (baseHealth / FORMATION_MOD_1 > customVars.numHitsSurvived * (enemyDamage - baseBlock / FORMATION_MOD_1 > 0 ? enemyDamage - baseBlock / FORMATION_MOD_1 : enemyDamage * pierceMod));
+    //enoughHealth = (baseHealth / FORMATION_MOD_1 > customVars.numHitsSurvived * (enemyDamage - baseBlock / FORMATION_MOD_1 > 0 ? enemyDamage - baseBlock / FORMATION_MOD_1 : enemyDamage * pierceMod));
+    //enoughHealth = (baseHealth / FORMATION_MOD_1 > customVars.numHitsSurvived * (enemyDamage - baseBlock / FORMATION_MOD_1 > 0 ? enemyDamage - baseBlock / FORMATION_MOD_1 : enemyDamage * pierceMod));
+    // breed * ourDeaths
+    //breed * (enemyHealth \ dmgOneLive)
+    // breed * (enemyHealth \ (ourDmg * hitsToSurvive))
+    // breed * (enemyHealth \ (ourDmg * (ourHealth / (enemyDmg-block)))) = timeEncounter
+    // getBreedTime() * (enemyHealth / (ourBaseDamage * (baseHealth / (enemyDamage-baseBlock))))
+
+    if ((getBreedTime() * (enemyHealth / (ourBaseDamage * (baseHealth / (enemyDamage-baseBlock)))) >= customVars.numHitsSurvived) ||
+        (calcBadGuyDmg(null, getEnemyMaxAttack(game.global.world, 99, 'Snimp', 0.8), true, true)) > baseHealth + baseBlock)
+    {
+        enoughHealth = false;
+    } else {
+        enoughHealth = true;
+    }
     enoughDamage = (ourBaseDamage * customVars.enoughDamageCutoff > enemyHealth);
 
     //remove this in the meantime until it works for everyone.
@@ -331,6 +346,16 @@ function autoMap() {
     if (preSpireFarming || spireMapBonusFarming) {
         shouldDoMaps = true;
         shouldDoSpireMaps = true;
+    }
+    //Run a single map to get nurseries when 1. it's still locked,
+    // 2. blacksmithery is purchased,
+    // but not when 3A. home detector is purchased, or 3B. we don't need nurseries
+    if (game.buildings.Nursery.locked && game.talents.blacksmith.purchased && !(game.talents.housing.purchased ||
+            (getPageSetting('PreSpireNurseries') < 0 ?
+                !(getPageSetting('MaxNursery') && game.global.world >= getPageSetting('NoNurseriesUntil')) :
+                !getPageSetting('PreSpireNurseries'))) && game.global.world >= customVars.NurseryMapLevel) {
+        shouldDoMaps = true;
+        shouldDoWatchMaps = true; //TODO coding: this is overloaded - not ideal.
     }
     //MaxMapBonusAfterZone (idea from awnv)
     var maxMapBonusZ = getPageSetting('MaxMapBonusAfterZone');
